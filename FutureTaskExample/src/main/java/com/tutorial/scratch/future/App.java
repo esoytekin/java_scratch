@@ -1,7 +1,5 @@
 package com.tutorial.scratch.future;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.math.BigInteger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,12 +12,12 @@ import java.util.concurrent.Semaphore;
 public class App 
 {
 
-	final ExecutorService es = Executors.newFixedThreadPool(5);
-	final Memoizer<String,BigInteger> cachedMemoizer = Memoizer.cachedMemoizer(new ExpensiveCompute());
-	final String[] tasks = {"2","2","2","3","4444"};
-	final Semaphore semaphore = new Semaphore(2);
+	private final ExecutorService es = Executors.newFixedThreadPool(5);
+	private final Memoizer<String,BigInteger> cachedMemoizer = Memoizer.cachedMemoizer(new ExpensiveCompute());
+	private final String[] tasks = {"2","2","2","3","4444"};
+	private final Semaphore semaphore = new Semaphore(2);
 
-	void run() {
+	private void run() {
 		
 		for (String task : tasks) {
 			
