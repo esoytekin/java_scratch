@@ -1,0 +1,401 @@
+swagger: '2.0'
+info:
+  title: Betbull Football Api Service
+  version: 1.0.0
+  description: Football api service to perform CRUD operations around a api resource
+  contact:
+    email: emrahsoytekin@gmail.com
+host: futbol.betbull.com
+basePath: /futbol-api
+schemes:
+  - http
+
+paths:
+  /team:
+    post:
+      tags:
+        - team
+      summary: add new team element
+      operationId: createTeam
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: team
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/TeamRequest'
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/TeamResponse'
+        500:
+          description: Internal error
+    put:
+      tags:
+        - team
+      summary: update team element
+      operationId: updateTeam
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: team
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/TeamResponse'
+      responses:
+        200:
+          description: successful operation
+        415:
+          description: bad request
+        500:
+          description: Internal Error
+    get:
+      tags:
+        - team
+      summary: returns list of teams
+      description: returns list of teams
+      operationId: getTeamList
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in  : query
+          type: string
+          required: false
+      responses:
+        200:
+          description: successfull operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TeamResponse'
+        500:
+          description: Internal error
+  /team/{teamId}:
+    delete:
+      summary: delete team entity
+      tags:
+        - team
+      operationId: deleteTeamById
+      parameters:
+        - name: teamId
+          in: path
+          type: integer
+          format: int64
+          required: true
+          description: numeric id of the team entity
+      responses:
+        200:
+          description: successful operation
+        500:
+          description: Internal Server Error
+
+  /team/{teamId}/{year}:
+    get:
+      summary: get contracts by teamId and year
+      tags:
+        - team
+      operationId: getContractsByTeamAndYear
+      produces:
+        - application/json
+      parameters:
+        - name: teamId
+          in: path
+          type: integer
+          format: int64
+          required: true
+          description: numeric id of the team
+        - name: year
+          in: path
+          type: integer
+          required: true
+          description: year of the contract
+      responses:
+        200:
+          description: successful operation. returns contracts of the team for that year.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LeagueResponse'
+  /player:
+    post:
+      tags:
+        - player
+      operationId: createPlayer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: player
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PlayerRequest'
+      responses:
+        200:
+          description: successfull operation
+          schema:
+            $ref: '#/definitions/PlayerResponse'
+        500:
+          description: Internal Server Error
+    put:
+      tags:
+        - player
+      operationId: updatePlayer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: player
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PlayerResponse'
+      responses:
+        200:
+          description: Successful Operation
+        415:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+    get:
+      tags:
+        - player
+      operationId: getPlayerList
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+        - name: surname
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: successfull operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PlayerResponse'
+  /player/{playerId}:
+    get:
+      summary: get contracts by player id
+      tags:
+        - player
+      operationId: getContractsByPlayer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: playerId
+          required: true
+          type: integer
+          format: int64
+          description: numeric id of the player to get
+      responses:
+        200:
+          description: returns contracts of the player
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LeagueResponse'
+    delete:
+      summary: delete player entity
+      tags:
+        - player
+      operationId: deletePlayerById
+      parameters:
+        - name: playerId
+          in: path
+          type: integer
+          format: int64
+          required: true
+          description: numeric id of the player entity
+      responses:
+        200:
+          description: successful operation
+        500:
+          description: Internal Server Error
+
+  /league:
+    post:
+      tags:
+        - league
+      operationId: createLeagueEntity
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: leagueEntity
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LeagueRequest'
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/LeagueResponse'
+    put:
+      tags:
+        - league
+      operationId: endContract
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: leagueEntity
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LeagueRequest'
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/LeagueResponse'
+
+  /fee/{playerId}/{teamId}:
+    get:
+      summary: get details and fee of the player
+      tags:
+        - fee
+      operationId: getFeeResponse
+      produces:
+        - application/json
+      parameters:
+       - name: playerId
+         in: path
+         type: integer
+         format: int64
+         required: true
+         description: numeric id of the player
+       - name: teamId
+         in: path
+         type: integer
+         format: int64
+         required: true
+         description: numeric id of the team that bids
+      responses:
+        200:
+          description: returns details of user and fee
+          schema:
+            $ref: '#/definitions/FeeResponse'
+
+
+definitions:
+  TeamRequest:
+    type: object
+    properties:
+      name:
+        type: string
+        description: name of the team
+      currency:
+        type: string
+        enum: [USD,EUR,TL]
+        description: currency of the team
+  TeamResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: database id of the team
+      name:
+        type: string
+        description: name of the team
+      currency:
+        type: string
+        enum: [USD,EUR,TL]
+        description: currency of the team
+  PlayerRequest:
+    type: object
+    required:
+      - name
+      - surname
+      - birthdate
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      surname:
+        type: string
+      birthdate:
+        type: string
+        format: date
+  PlayerResponse:
+    type: object
+    properties:
+      name:
+        type: string
+      surname:
+        type: string
+      birthdate:
+        type: string
+        format: date
+      id:
+        type: integer
+        format: int64
+  LeagueRequest:
+    type: object
+    required:
+      - player
+      - team
+    properties:
+      id:
+        type: integer
+        format: int64
+      player:
+        $ref: '#/definitions/PlayerResponse'
+      team:
+        $ref: '#/definitions/TeamResponse'
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+  LeagueResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      player:
+        $ref: '#/definitions/PlayerResponse'
+      team:
+        $ref: '#/definitions/TeamResponse'
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+  FeeResponse:
+    type: object
+    properties:
+      transferFee:
+        type: string
+      teamCommission:
+        type: string
+      contractFee:
+        type: string
+      player:
+        $ref: '#/definitions/PlayerResponse'
+
