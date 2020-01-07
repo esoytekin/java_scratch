@@ -1,0 +1,3 @@
+[submodule "interview/shopping-chart"]
+	path = interview/shopping-chart
+	url = git@github.com:esoytekin/shopping-chart.git
