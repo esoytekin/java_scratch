@@ -1,3 +1,6 @@
 [submodule "interview/shopping-chart"]
 	path = interview/shopping-chart
 	url = git@github.com:esoytekin/shopping-chart.git
+[submodule "interview/bundle_cargo"]
+	path = interview/bundle_cargo
+	url = https://github.com/esoytekin/bundle_cargo
